@@ -22,7 +22,8 @@ export default function BillingPage() {
 
   return (
     <div className="p-6 sm:p-8">
-      <div className="mb-6">
+      <div className="mb-8">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Account</p>
         <h1 className="text-2xl font-bold text-gray-900">Billing</h1>
         <p className="text-gray-500 text-sm mt-1">Manage your account balance and view transaction history.</p>
       </div>
@@ -35,7 +36,7 @@ export default function BillingPage() {
             {formatGBP(supplier?.accountBalance ?? 0)}
           </p>
           {(supplier?.accountBalance ?? 0) < 1000 && (
-            <p className="text-xs text-red-500 mt-1">⚠️ Low balance — top up to keep receiving leads</p>
+            <p className="text-xs text-red-500 mt-1">Low balance — top up to keep receiving leads</p>
           )}
         </div>
 
@@ -55,7 +56,7 @@ export default function BillingPage() {
               />
             </div>
             <Button type="submit" className="bg-blue-700 hover:bg-blue-800 text-white">
-              {topUpDone ? '✓ Topped up!' : 'Top Up'}
+              {topUpDone ? 'Topped up!' : 'Top Up'}
             </Button>
           </form>
           <div className="flex gap-2 mt-3">
@@ -77,7 +78,7 @@ export default function BillingPage() {
       {/* Transaction history */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-50">
-          <h2 className="font-semibold text-gray-900">Transaction History</h2>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Transaction History</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

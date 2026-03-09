@@ -21,14 +21,15 @@ export default function SettingsPage() {
 
   return (
     <div className="p-6 sm:p-8 max-w-2xl">
-      <div className="mb-6">
+      <div className="mb-8">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Account</p>
         <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-500 text-sm mt-1">Manage your account profile and preferences.</p>
+        <p className="text-gray-500 text-sm mt-0.5">Manage your account profile and preferences.</p>
       </div>
 
       {/* Lead toggle */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Lead Generation</h2>
+      <div className="bg-white rounded-xl border border-gray-100 p-6 mb-5">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Lead Generation</p>
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-medium text-gray-900">Receive leads</p>
@@ -46,14 +47,14 @@ export default function SettingsPage() {
         </div>
         {!leadsEnabled && (
           <div className="mt-3 bg-amber-50 border border-amber-100 rounded-lg p-3 text-xs text-amber-800">
-            ⚠️ Your leads are currently paused. Customers in your area will not see your listing until you turn this back on.
+            Your leads are currently paused. Customers in your area will not see your listing until you turn this back on.
           </div>
         )}
       </div>
 
       {/* Profile */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Company Profile</h2>
+      <div className="bg-white rounded-xl border border-gray-100 p-6 mb-5">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Company Profile</p>
         <div className="space-y-4">
           <div>
             <Label htmlFor="companyName">Company name</Label>
@@ -81,7 +82,7 @@ export default function SettingsPage() {
       </div>
 
       <Button onClick={handleSave} className="bg-blue-700 hover:bg-blue-800 text-white">
-        {saved ? '✓ Changes Saved' : 'Save Changes'}
+        {saved ? 'Saved' : 'Save Changes'}
       </Button>
     </div>
   );

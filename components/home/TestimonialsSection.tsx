@@ -3,26 +3,26 @@ import { StarRating } from '@/components/shared/StarRating';
 
 export function TestimonialsSection() {
   return (
-    <section className="py-14 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">What Our Customers Say</h2>
-          <p className="mt-2 text-gray-500">Real reviews from real homeowners across the UK</p>
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <div className="mb-12">
+          <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Reviews</p>
+          <h2 className="text-3xl font-black text-gray-950 tracking-tight">What customers say</h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {MOCK_TESTIMONIALS.map(t => (
-            <div key={t.id} className="bg-gray-50 rounded-xl p-6 border border-gray-100 flex flex-col">
+            <div key={t.id} className="bg-white rounded-xl border border-gray-100 p-6 flex flex-col">
               <StarRating rating={t.rating} />
-              <blockquote className="mt-3 text-sm text-gray-700 leading-relaxed flex-1">
+              <blockquote className="mt-4 text-sm text-gray-600 leading-relaxed flex-1 italic">
                 &ldquo;{t.comment}&rdquo;
               </blockquote>
-              <div className="mt-4 flex items-center gap-3 pt-4 border-t border-gray-200">
-                <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-sm">
+              <div className="mt-5 pt-5 border-t border-gray-50 flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 font-black text-xs flex-shrink-0">
                   {t.name.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-gray-900">{t.name}</p>
-                  <p className="text-xs text-gray-400">{t.trade} · {t.location}</p>
+                  <p className="text-sm font-semibold text-gray-900 leading-tight">{t.name}</p>
+                  <p className="text-xs text-gray-400">{t.trade} &middot; {t.location}</p>
                 </div>
               </div>
             </div>

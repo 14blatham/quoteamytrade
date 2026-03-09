@@ -1,152 +1,137 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useQuoteForm } from './QuoteFormContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useQuoteForm } from './QuoteFormContext';
-import type { PreferredContact } from '@/types';
-
-const CONTACT_OPTIONS: { value: PreferredContact; label: string }[] = [
-  { value: 'phone', label: 'Phone call' },
-  { value: 'email', label: 'Email' },
-  { value: 'either', label: 'Either' },
-];
+import { ArrowLeft, ShieldCheck } from 'lucide-react';
 
 export function StepContactInfo() {
-  const router = useRouter();
-  const { formState, updateForm, clearForm } = useQuoteForm();
-
+  const { formState, updateForm } = useQuoteForm();
   const [firstName, setFirstName] = useState(formState.contact?.firstName ?? '');
   const [lastName, setLastName] = useState(formState.contact?.lastName ?? '');
   const [email, setEmail] = useState(formState.contact?.email ?? '');
   const [phone, setPhone] = useState(formState.contact?.phone ?? '');
-  const [preferredContact, setPreferredContact] = useState<PreferredContact>(
-    formState.contact?.preferredContact ?? 'either'
+  const [preferredContact, setPreferredContact] = useState<'email' | 'phone' | 'either'>(
+    formState.contact?.preferredContact ?? 'email'
   );
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  if (!formState.tradeSlug || !formState.jobDetails) {
-    router.replace('/get-quotes');
-    return null;
-  }
-
-  function validate() {
-    const newErrors: Record<string, string> = {};
-    if (!firstName.trim()) newErrors.firstName = 'First name is required.';
-    if (!lastName.trim()) newErrors.lastName = 'Last name is required.';
-    if (!email.includes('@') || !email.includes('.')) newErrors.email = 'Please enter a valid email address.';
-    if (phone.length < 10) newErrors.phone = 'Please enter a valid UK phone number.';
-    return newErrors;
-  }
-
-  function handleBack() { router.back(); }
+  const isValid = firstName && lastName && email && phone;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const newErrors = validate();
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
-
-    updateForm({
-      contact: { firstName, lastName, email, phone, preferredContact },
-    });
-
-    const params = new URLSearchParams({
-      trade: formState.tradeSlug!,
-      postcode: formState.postcode!,
-    });
-
-    clearForm();
-    router.push(`/results?${params.toString()}`);
+    if (!isValid) return;
+    updateForm({ contact: { firstName, lastName, email, phone, preferredContact } });
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <Label htmlFor="firstName">First name</Label>
+          <Label htmlFor="firstName" className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">
+            First Name
+          </Label>
           <Input
             id="firstName"
             value={firstName}
             onChange={e => setFirstName(e.target.value)}
-            className="mt-1"
+            required
             autoComplete="given-name"
+            className="h-11 border-gray-200 focus:border-blue-400 focus:ring-blue-100"
           />
-          {errors.firstName && <p className="text-xs text-red-600 mt-1">{errors.firstName}</p>}
         </div>
         <div>
-          <Label htmlFor="lastName">Last name</Label>
+          <Label htmlFor="lastName" className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">
+            Last Name
+          </Label>
           <Input
             id="lastName"
             value={lastName}
             onChange={e => setLastName(e.target.value)}
-            className="mt-1"
+            required
             autoComplete="family-name"
+            className="h-11 border-gray-200 focus:border-blue-400 focus:ring-blue-100"
           />
-          {errors.lastName && <p className="text-xs text-red-600 mt-1">{errors.lastName}</p>}
         </div>
       </div>
 
       <div>
-        <Label htmlFor="email">Email address</Label>
+        <Label htmlFor="email" className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">
+          Email Address
+        </Label>
         <Input
           id="email"
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="mt-1"
+          required
           autoComplete="email"
-          placeholder="your@email.co.uk"
+          className="h-11 border-gray-200 focus:border-blue-400 focus:ring-blue-100"
         />
-        {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
       </div>
 
       <div>
-        <Label htmlFor="phone">Phone number</Label>
+        <Label htmlFor="phone" className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 block">
+          Phone Number
+        </Label>
         <Input
           id="phone"
           type="tel"
           value={phone}
           onChange={e => setPhone(e.target.value)}
-          className="mt-1"
+          required
           autoComplete="tel"
-          placeholder="07700 900123"
+          className="h-11 border-gray-200 focus:border-blue-400 focus:ring-blue-100"
         />
-        {errors.phone && <p className="text-xs text-red-600 mt-1">{errors.phone}</p>}
       </div>
 
+      {/* Preferred contact */}
       <div>
-        <Label>Preferred contact method</Label>
-        <div className="flex gap-3 mt-2">
-          {CONTACT_OPTIONS.map(opt => (
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Preferred Contact Method</p>
+        <div className="grid grid-cols-2 gap-2">
+          {(['email', 'phone'] as const).map(opt => (
             <button
-              key={opt.value}
+              key={opt}
               type="button"
-              onClick={() => setPreferredContact(opt.value)}
-              className={`flex-1 py-2 px-3 rounded-lg border-2 text-sm font-medium transition-all ${
-                preferredContact === opt.value
-                  ? 'border-blue-700 bg-blue-50 text-blue-700'
-                  : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+              onClick={() => setPreferredContact(opt)}
+              className={`py-2.5 rounded-xl border-2 text-sm font-medium capitalize transition-all ${
+                preferredContact === opt
+                  ? 'border-blue-600 bg-blue-50 text-blue-700'
+                  : 'border-gray-100 bg-gray-50 text-gray-700 hover:border-gray-200'
               }`}
             >
-              {opt.label}
+              {opt}
             </button>
           ))}
         </div>
       </div>
 
-      <p className="text-xs text-gray-400 bg-gray-50 rounded-lg p-3 border border-gray-100">
-        🔒 Your details are shared only with matched tradespeople in your area. We will never sell your data to third parties.
-      </p>
+      {/* Privacy note */}
+      <div className="flex items-start gap-2.5 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3">
+        <ShieldCheck className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Your details are shared only with matched tradespeople. We never sell your data to third parties.
+        </p>
+      </div>
 
-      <div className="flex gap-3">
-        <Button type="button" variant="outline" className="flex-1" onClick={handleBack}>
-          ← Back
+      <div className="flex gap-3 pt-1">
+        <Button
+          type="button"
+          variant="outline"
+          className="flex-1 border-gray-200 text-gray-700 h-11"
+          onClick={() => updateForm({ step: 2 })}
+        >
+          <ArrowLeft className="w-4 h-4 mr-1.5" />
+          Back
         </Button>
-        <Button type="submit" className="flex-[2] bg-blue-700 hover:bg-blue-800 text-white" size="lg">
-          Find Tradespeople →
+        <Button
+          type="submit"
+          disabled={!isValid}
+          className="flex-[2] bg-blue-700 hover:bg-blue-800 text-white font-semibold h-11 disabled:opacity-40"
+          size="lg"
+        >
+          Get Free Quotes
         </Button>
       </div>
     </form>

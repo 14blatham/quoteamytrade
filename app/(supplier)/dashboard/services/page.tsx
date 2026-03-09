@@ -22,7 +22,8 @@ export default function ServicesPage() {
   return (
     <div className="p-6 sm:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Services & Prices</h1>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Dashboard</p>
+        <h1 className="text-2xl font-bold text-gray-900">Services &amp; Prices</h1>
         <p className="text-gray-500 text-sm mt-1">Set the price ranges you show to customers for each service.</p>
       </div>
 
@@ -63,7 +64,7 @@ export default function ServicesPage() {
 
       <div className="mt-4 flex items-center gap-3">
         <Button onClick={handleSave} className="bg-blue-700 hover:bg-blue-800 text-white">
-          {saved ? '✓ Saved' : 'Save Changes'}
+          {saved ? 'Saved' : 'Save Changes'}
         </Button>
         <p className="text-xs text-gray-400">Lead costs are set by QuoteMyTrade and shown for reference only.</p>
       </div>

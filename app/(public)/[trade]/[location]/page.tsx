@@ -5,8 +5,10 @@ import { TRADE_CATEGORIES } from '@/lib/constants/trades';
 import { UK_LOCATIONS } from '@/lib/constants/locations';
 import { MOCK_SUPPLIERS } from '@/lib/mock-data/suppliers';
 import { SupplierCard } from '@/components/results/SupplierCard';
+import { TradeIcon } from '@/components/shared/TradeIcon';
 import { formatGBP } from '@/lib/utils/formatting';
 import { generateTradeLocationMeta, generateJsonLdFAQ } from '@/lib/utils/seo';
+import { MapPin, ChevronRight } from 'lucide-react';
 
 interface Props {
   params: Promise<{ trade: string; location: string }>;
@@ -66,30 +68,33 @@ export default async function TradeLocationPage({ params }: Props) {
       <div className="min-h-screen">
         {/* Breadcrumb */}
         <div className="bg-white border-b border-gray-100">
-          <div className="max-w-4xl mx-auto px-4 py-3 text-sm text-gray-500 flex gap-2">
-            <Link href="/" className="hover:text-blue-700">Home</Link>
-            <span>/</span>
-            <Link href={`/services/${trade.slug}`} className="hover:text-blue-700">{trade.name}</Link>
-            <span>/</span>
-            <span className="text-gray-900">{location.city}</span>
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-1.5 text-xs text-gray-400">
+            <Link href="/" className="hover:text-blue-700 transition-colors">Home</Link>
+            <ChevronRight className="w-3 h-3" />
+            <Link href={`/services/${trade.slug}`} className="hover:text-blue-700 transition-colors">{trade.name}</Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-gray-700 font-medium">{location.city}</span>
           </div>
         </div>
 
         {/* Hero */}
-        <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white py-12">
+        <div className="bg-gray-950 text-white py-12">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <span className="text-4xl block mb-3">{trade.icon}</span>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-3">
+            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <TradeIcon slug={trade.slug} className="w-6 h-6 text-white" />
+            </div>
+            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">
               {trade.name} in {location.city}
             </h1>
-            <p className="text-blue-100 text-lg mb-2">
+            <p className="text-gray-400 text-lg mb-2">
               Free quotes from vetted local {trade.name.toLowerCase()} in {location.city} and {location.region}
             </p>
-            <p className="text-blue-200 text-sm mb-8">
-              Typical cost: <strong className="text-white">{formatGBP(trade.averageCostFrom)} – {formatGBP(trade.averageCostTo)}</strong>
+            <p className="text-gray-500 text-sm mb-8">
+              Typical cost:{' '}
+              <strong className="text-white">{formatGBP(trade.averageCostFrom)} – {formatGBP(trade.averageCostTo)}</strong>
             </p>
             <Link href={`/get-quotes?trade=${trade.slug}&postcode=${location.postcodeDistricts[0]}`}>
-              <Button size="lg" className="bg-white text-blue-700 hover:bg-blue-50 font-semibold px-10">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10">
                 Get Free Quotes in {location.city}
               </Button>
             </Link>
@@ -100,8 +105,9 @@ export default async function TradeLocationPage({ params }: Props) {
           {/* Suppliers */}
           {suppliers.length > 0 ? (
             <section className="mb-10">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Available Now</p>
               <h2 className="text-xl font-bold text-gray-900 mb-4">
-                {suppliers.length} {trade.name} Available in {location.city}
+                {suppliers.length} {trade.name} in {location.city}
               </h2>
               <div className="space-y-4">
                 {suppliers.map(supplier => (
@@ -110,27 +116,35 @@ export default async function TradeLocationPage({ params }: Props) {
               </div>
             </section>
           ) : (
-            <section className="mb-10 bg-blue-50 border border-blue-100 rounded-xl p-6 text-center">
-              <p className="text-blue-800 font-medium mb-3">
-                We&apos;re growing our network in {location.city}. Request quotes now and we&apos;ll match you with available {trade.name.toLowerCase()}.
-              </p>
-              <Link href={`/get-quotes?trade=${trade.slug}`}>
-                <Button className="bg-blue-700 hover:bg-blue-800 text-white">Request Quotes</Button>
-              </Link>
+            <section className="mb-10">
+              <div className="bg-white border border-gray-100 rounded-2xl p-8 text-center">
+                <div className="w-10 h-10 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-5 h-5 text-blue-600" />
+                </div>
+                <p className="text-gray-700 font-semibold mb-1">Growing our network in {location.city}</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  Request quotes now and we&apos;ll match you with available {trade.name.toLowerCase()}.
+                </p>
+                <Link href={`/get-quotes?trade=${trade.slug}`}>
+                  <Button className="bg-blue-700 hover:bg-blue-800 text-white font-semibold">Request Quotes</Button>
+                </Link>
+              </div>
             </section>
           )}
 
           {/* Nearby locations */}
           <section className="mb-10">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Nearby</p>
             <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} in Nearby Areas</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {UK_LOCATIONS.filter(l => l.slug !== location.slug).slice(0, 8).map(loc => (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {UK_LOCATIONS.filter(l => l.slug !== location.slug).slice(0, 8).map(nearbyLoc => (
                 <Link
-                  key={loc.slug}
-                  href={`/${trade.slug}/${loc.slug}`}
-                  className="text-sm bg-gray-50 border border-gray-100 rounded-lg px-3 py-2 text-blue-700 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+                  key={nearbyLoc.slug}
+                  href={`/${trade.slug}/${nearbyLoc.slug}`}
+                  className="flex items-center gap-2 text-sm bg-white border border-gray-100 rounded-xl px-3 py-2.5 text-gray-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium"
                 >
-                  {trade.singularName} in {loc.city}
+                  <MapPin className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                  {nearbyLoc.city}
                 </Link>
               ))}
             </div>
@@ -138,11 +152,12 @@ export default async function TradeLocationPage({ params }: Props) {
 
           {/* FAQ */}
           <section>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">FAQs: {trade.name} in {location.city}</h2>
-            <div className="space-y-4">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">FAQs</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} in {location.city}</h2>
+            <div className="space-y-3">
               {faqs.map(faq => (
                 <div key={faq.question} className="bg-white border border-gray-100 rounded-xl p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2">{faq.question}</h3>
+                  <h3 className="font-bold text-gray-900 mb-2">{faq.question}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{faq.answer}</p>
                 </div>
               ))}

@@ -99,7 +99,7 @@ export default function CoveragePage() {
 
       <div className="mt-4">
         <Button onClick={handleSave} className="bg-blue-700 hover:bg-blue-800 text-white">
-          {saved ? '✓ Saved' : 'Save Coverage'}
+          {saved ? 'Saved' : 'Save Coverage'}
         </Button>
       </div>
     </div>

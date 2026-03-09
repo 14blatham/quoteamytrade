@@ -3,10 +3,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { StarRating } from '@/components/shared/StarRating';
 import { VerifiedBadge } from '@/components/shared/VerifiedBadge';
+import { TradeIcon } from '@/components/shared/TradeIcon';
 import { MOCK_SUPPLIERS, getReviewsForSupplier } from '@/lib/mock-data/suppliers';
 import { TRADE_CATEGORIES } from '@/lib/constants/trades';
 import { formatGBP, formatShortDate } from '@/lib/utils/formatting';
 import { generateSupplierMeta, generateJsonLdLocalBusiness } from '@/lib/utils/seo';
+import { ShieldCheck, Clock, Briefcase, MapPin, ArrowRight } from 'lucide-react';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,6 +43,8 @@ export default async function SupplierProfilePage({ params }: Props) {
     coveragePostcodes: supplier.coveragePostcodes,
   });
 
+  const initials = supplier.companyName.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase();
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
@@ -48,54 +52,58 @@ export default async function SupplierProfilePage({ params }: Props) {
       <div className="min-h-screen bg-gray-50">
         {/* Hero */}
         <div className="bg-white border-b border-gray-100">
-          <div className="max-w-4xl mx-auto px-4 py-8">
-            <div className="flex items-start gap-4 flex-wrap">
-              <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-2xl flex-shrink-0">
-                {supplier.companyName.charAt(0)}
+          <div className="max-w-5xl mx-auto px-4 py-8">
+            <div className="flex items-start gap-5 flex-wrap">
+              {/* Avatar */}
+              <div className="w-16 h-16 rounded-2xl bg-gray-950 flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-black text-lg tracking-tight">{initials}</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2 flex-wrap mb-0.5">
                   <h1 className="text-2xl font-bold text-gray-900">{supplier.companyName}</h1>
                   <VerifiedBadge status={supplier.verification} />
                 </div>
-                <p className="text-gray-500 text-sm mt-1">{supplier.ownerName}</p>
-                <div className="flex items-center gap-4 mt-2 flex-wrap text-sm">
+                <p className="text-sm text-gray-500 mb-2">{supplier.ownerName}</p>
+                <div className="flex items-center gap-3 flex-wrap text-sm">
                   <div className="flex items-center gap-1.5">
                     <StarRating rating={supplier.stats.averageRating} size="md" />
-                    <span className="font-semibold">{supplier.stats.averageRating}</span>
+                    <span className="font-bold text-gray-900">{supplier.stats.averageRating}</span>
                     <span className="text-gray-400">({supplier.stats.reviewCount} reviews)</span>
                   </div>
-                  <span className="text-gray-400">·</span>
-                  <span className="text-gray-600">{supplier.stats.jobsCompleted} jobs completed</span>
-                  <span className="text-gray-400">·</span>
-                  <span className="text-gray-600">Member since {new Date(supplier.stats.memberSince).getFullYear()}</span>
+                  <span className="text-gray-200">|</span>
+                  <span className="text-gray-600">{supplier.stats.jobsCompleted} jobs</span>
+                  <span className="text-gray-200">|</span>
+                  <span className="text-gray-600">Since {new Date(supplier.stats.memberSince).getFullYear()}</span>
                 </div>
               </div>
-              <Link href={`/get-quotes?trade=${supplier.trades[0]}`}>
-                <Button className="bg-blue-700 hover:bg-blue-800 text-white">Get a Quote</Button>
+              <Link href={`/get-quotes?trade=${supplier.trades[0]}`} className="flex-shrink-0">
+                <Button className="bg-blue-700 hover:bg-blue-800 text-white font-semibold">
+                  Get a Quote
+                  <ArrowRight className="w-4 h-4 ml-1.5" />
+                </Button>
               </Link>
             </div>
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main column */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-5">
             {/* About */}
             <section className="bg-white rounded-xl border border-gray-100 p-6">
-              <h2 className="font-semibold text-gray-900 mb-3">About</h2>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">About</p>
               <p className="text-gray-600 text-sm leading-relaxed">{supplier.bio}</p>
             </section>
 
             {/* Services & Pricing */}
             <section className="bg-white rounded-xl border border-gray-100 p-6">
-              <h2 className="font-semibold text-gray-900 mb-4">Services & Pricing</h2>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Services & Pricing</p>
               <div className="divide-y divide-gray-50">
                 {Object.entries(supplier.pricing).map(([id, pricing]) => (
-                  <div key={id} className="py-3 flex items-center justify-between">
-                    <span className="text-sm text-gray-700 capitalize">{id.replace(/-/g, ' ')}</span>
-                    <span className="text-sm font-semibold text-gray-900">
-                      {formatGBP(pricing.priceFrom)} – {formatGBP(pricing.priceTo)}
+                  <div key={id} className="py-3.5 flex items-center justify-between">
+                    <span className="text-sm text-gray-700 capitalize font-medium">{id.replace(/-/g, ' ')}</span>
+                    <span className="text-sm font-bold text-gray-900">
+                      {formatGBP((pricing as any).priceFrom)} – {formatGBP((pricing as any).priceTo)}
                     </span>
                   </div>
                 ))}
@@ -104,27 +112,37 @@ export default async function SupplierProfilePage({ params }: Props) {
 
             {/* Reviews */}
             <section className="bg-white rounded-xl border border-gray-100 p-6">
-              <h2 className="font-semibold text-gray-900 mb-4">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Customer Reviews ({reviews.length})
-              </h2>
+              </p>
               {reviews.length > 0 ? (
                 <div className="space-y-5">
                   {reviews.map(review => (
                     <div key={review.id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
                       <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <StarRating rating={review.rating} />
-                          <p className="font-semibold text-sm text-gray-900 mt-1">{review.customerName}</p>
-                          <p className="text-xs text-gray-400">{review.serviceType} · {review.location}</p>
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs font-bold text-blue-700">
+                              {review.customerName.charAt(0)}
+                            </span>
+                          </div>
+                          <div>
+                            <StarRating rating={review.rating} />
+                            <p className="font-semibold text-sm text-gray-900 mt-1">{review.customerName}</p>
+                            <p className="text-xs text-gray-400">{review.serviceType} · {review.location}</p>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1 flex-shrink-0">
+                        <div className="flex items-center gap-1.5 flex-shrink-0">
                           <span className="text-xs text-gray-400">{formatShortDate(review.date)}</span>
                           {review.verified && (
-                            <span className="text-xs text-green-600 font-medium">✓ Verified</span>
+                            <span className="flex items-center gap-0.5 text-[10px] text-green-600 font-bold uppercase tracking-wide">
+                              <ShieldCheck className="w-3 h-3" />
+                              Verified
+                            </span>
                           )}
                         </div>
                       </div>
-                      <p className="mt-2 text-sm text-gray-600 leading-relaxed">{review.comment}</p>
+                      <p className="mt-3 text-sm text-gray-600 leading-relaxed pl-11">{review.comment}</p>
                     </div>
                   ))}
                 </div>
@@ -136,18 +154,46 @@ export default async function SupplierProfilePage({ params }: Props) {
 
           {/* Sidebar */}
           <div className="space-y-4">
+            {/* Quick stats */}
+            <div className="bg-white rounded-xl border border-gray-100 p-5">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4">Quick Stats</p>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Clock className="w-3.5 h-3.5" />
+                    Response time
+                  </div>
+                  <span className="text-sm font-bold text-gray-900">~{supplier.stats.responseTimeHours}h</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Briefcase className="w-3.5 h-3.5" />
+                    Jobs completed
+                  </div>
+                  <span className="text-sm font-bold text-gray-900">{supplier.stats.jobsCompleted}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <MapPin className="w-3.5 h-3.5" />
+                    Coverage areas
+                  </div>
+                  <span className="text-sm font-bold text-gray-900">{supplier.coveragePostcodes.length}</span>
+                </div>
+              </div>
+            </div>
+
             {/* Trades */}
             <div className="bg-white rounded-xl border border-gray-100 p-5">
-              <h3 className="font-semibold text-gray-900 text-sm mb-3">Trades</h3>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Trades</p>
               <div className="flex flex-wrap gap-2">
                 {trades.map(t => t && (
                   <Link
                     key={t.slug}
                     href={`/services/${t.slug}`}
-                    className="flex items-center gap-1 text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full hover:bg-blue-100 transition-colors"
+                    className="flex items-center gap-1.5 text-xs bg-gray-50 border border-gray-100 text-gray-700 px-2.5 py-1.5 rounded-lg hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium"
                   >
-                    <span>{t.icon}</span>
-                    <span>{t.name}</span>
+                    <TradeIcon slug={t.slug} className="w-3 h-3" />
+                    {t.name}
                   </Link>
                 ))}
               </div>
@@ -155,34 +201,18 @@ export default async function SupplierProfilePage({ params }: Props) {
 
             {/* Coverage */}
             <div className="bg-white rounded-xl border border-gray-100 p-5">
-              <h3 className="font-semibold text-gray-900 text-sm mb-3">Coverage Areas</h3>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">Coverage Areas</p>
               <div className="flex flex-wrap gap-1.5">
                 {supplier.coveragePostcodes.map(pc => (
-                  <span key={pc} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">{pc}</span>
+                  <span key={pc} className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md font-mono font-medium">{pc}</span>
                 ))}
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="bg-white rounded-xl border border-gray-100 p-5 space-y-3">
-              <h3 className="font-semibold text-gray-900 text-sm mb-3">Quick Stats</h3>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Response time</span>
-                <span className="font-medium">~{supplier.stats.responseTimeHours}h</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Jobs completed</span>
-                <span className="font-medium">{supplier.stats.jobsCompleted}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Member since</span>
-                <span className="font-medium">{new Date(supplier.stats.memberSince).getFullYear()}</span>
-              </div>
-            </div>
-
             <Link href={`/get-quotes?trade=${supplier.trades[0]}`}>
-              <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white">
+              <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold">
                 Get a Free Quote
+                <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
           </div>

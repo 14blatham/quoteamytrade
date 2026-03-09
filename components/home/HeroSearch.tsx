@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Search, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { TRADE_CATEGORIES } from '@/lib/constants/trades';
 import { validateUKPostcode, formatPostcode } from '@/lib/utils/postcode';
 
@@ -16,88 +16,67 @@ export function HeroSearch() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-
-    if (!trade) {
-      setError('Please select a trade type.');
-      return;
-    }
-    if (!validateUKPostcode(postcode)) {
-      setError('Please enter a valid UK postcode (e.g. SW1A 1AA).');
-      return;
-    }
-
-    const formatted = formatPostcode(postcode);
-    router.push(`/get-quotes?trade=${trade}&postcode=${encodeURIComponent(formatted)}`);
+    if (!trade) { setError('Please select a trade type.'); return; }
+    if (!validateUKPostcode(postcode)) { setError('Please enter a valid UK postcode — e.g. SW1A 1AA'); return; }
+    router.push(`/get-quotes?trade=${trade}&postcode=${encodeURIComponent(formatPostcode(postcode))}`);
   }
 
   return (
-    <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white py-16 sm:py-24">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-3xl sm:text-5xl font-bold leading-tight mb-4">
-          Find Trusted Local Tradespeople — Free
+    <section className="relative bg-[#060C18] overflow-hidden">
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px'}} />
+      {/* Blue glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-600/10 rounded-full blur-3xl" />
+
+      <div className="relative max-w-4xl mx-auto px-6 lg:px-8 pt-24 pb-20 text-center">
+        <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-8">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+          <span className="text-xs font-medium text-gray-300 tracking-wide">2,500+ vetted tradespeople across the UK</span>
+        </div>
+
+        <h1 className="text-4xl sm:text-6xl font-black text-white leading-[1.05] tracking-tight mb-5">
+          Find the Right<br />
+          <span className="text-blue-400">Tradesperson</span>
         </h1>
-        <p className="text-lg sm:text-xl text-blue-100 mb-10 max-w-xl mx-auto">
-          Get instant quotes from vetted local tradespeople. No middleman, no commission — just direct contact.
+        <p className="text-lg text-gray-400 max-w-xl mx-auto mb-12 leading-relaxed">
+          Instant quotes from vetted local professionals. No middleman, no commission — just direct contact, completely free.
         </p>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-4 sm:p-6 shadow-xl">
-          <div className="flex flex-col sm:flex-row gap-3">
-            {/* Trade select */}
-            <div className="flex-1">
-              <label htmlFor="trade-select" className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 text-left">
-                I need a...
-              </label>
+        {/* Search form */}
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-3 shadow-2xl shadow-black/40 max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               <select
-                id="trade-select"
                 value={trade}
                 onChange={e => setTrade(e.target.value)}
-                className="w-full h-12 rounded-lg border border-gray-200 bg-gray-50 px-3 text-gray-900 text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-50 border-0 text-gray-900 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none cursor-pointer"
               >
-                <option value="">Select trade type</option>
+                <option value="">Select a trade...</option>
                 {TRADE_CATEGORIES.map(t => (
-                  <option key={t.slug} value={t.slug}>
-                    {t.icon} {t.name}
-                  </option>
+                  <option key={t.slug} value={t.slug}>{t.name}</option>
                 ))}
               </select>
             </div>
-
-            {/* Postcode input */}
-            <div className="flex-1">
-              <label htmlFor="postcode-input" className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1 text-left">
-                My postcode
-              </label>
-              <Input
-                id="postcode-input"
+            <div className="flex-1 relative">
+              <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              <input
                 type="text"
-                placeholder="e.g. SW1A 1AA"
+                placeholder="Your postcode"
                 value={postcode}
                 onChange={e => setPostcode(e.target.value.toUpperCase())}
-                className="h-12 text-base bg-gray-50 border-gray-200 uppercase"
+                className="w-full h-12 pl-10 pr-4 rounded-xl bg-gray-50 border-0 text-gray-900 text-sm font-medium uppercase placeholder:normal-case placeholder:font-normal placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 autoComplete="postal-code"
               />
             </div>
-
-            <div className="flex items-end">
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full sm:w-auto h-12 px-8 bg-blue-700 hover:bg-blue-800 text-white font-semibold text-base"
-              >
-                Get Quotes
-              </Button>
-            </div>
+            <Button type="submit" className="h-12 px-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-sm flex-shrink-0">
+              Get Quotes
+            </Button>
           </div>
-
-          {error && (
-            <p className="mt-3 text-sm text-red-600 text-left">{error}</p>
-          )}
-
-          <p className="mt-4 text-xs text-gray-400 text-center">
-            100% free for customers · No call-out fees · No commission charged
-          </p>
+          {error && <p className="text-xs text-red-500 mt-2 px-2 text-left">{error}</p>}
+          <p className="text-xs text-gray-400 text-center mt-2 pb-1">Free for customers &middot; Results in under 2 minutes &middot; No hidden fees</p>
         </form>
       </div>
-    </div>
+    </section>
   );
 }
