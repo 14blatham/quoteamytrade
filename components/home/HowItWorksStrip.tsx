@@ -65,7 +65,7 @@ export function HowItWorksStrip() {
         </div>
 
         <div className="mt-14 pt-14 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-500 text-sm">No account required. No call-out fees. No commission on the final job.</p>
+          <p className="text-gray-500 text-sm">No account required. No call out fees. No commission on the final job.</p>
           <Link href="/get-quotes">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8">Get Free Quotes</Button>
           </Link>
