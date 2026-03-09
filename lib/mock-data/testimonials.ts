@@ -1,0 +1,58 @@
+import type { Testimonial } from '@/types';
+
+export const MOCK_TESTIMONIALS: Testimonial[] = [
+  {
+    id: 'test-001',
+    name: 'Sophie Harrison',
+    location: 'London',
+    trade: 'Plumber',
+    rating: 5,
+    comment: 'Found a brilliant plumber within minutes. He arrived same day and sorted our burst pipe quickly. The process was so easy — just filled in a short form and got matched instantly.',
+    date: '2025-11-20',
+  },
+  {
+    id: 'test-002',
+    name: 'Gareth Williams',
+    location: 'Birmingham',
+    trade: 'Surveyor',
+    rating: 5,
+    comment: 'I was amazed how simple it was. Got three quotes from RICS surveyors within 24 hours. The surveyor I chose was thorough and professional. Saved me time and money.',
+    date: '2025-10-28',
+  },
+  {
+    id: 'test-003',
+    name: 'Claire Booth',
+    location: 'Manchester',
+    trade: 'Builder',
+    rating: 5,
+    comment: 'QuoteMyTrade connected us with Dave at Northern Build Solutions who built our extension. The whole experience from quote to completion was faultless. Highly recommend this site.',
+    date: '2025-11-05',
+  },
+  {
+    id: 'test-004',
+    name: 'Paul Davies',
+    location: 'Leeds',
+    trade: 'Gas Engineer',
+    rating: 5,
+    comment: 'Boiler stopped working on a freezing Sunday night. Used QuoteMyTrade and had a Gas Safe engineer at my door by 9am Monday. Can\'t fault the service.',
+    date: '2025-12-07',
+  },
+  {
+    id: 'test-005',
+    name: 'Natalie Cole',
+    location: 'Bristol',
+    trade: 'Roofer',
+    rating: 4,
+    comment: 'Really useful platform — found a local roofer who came to survey within 2 days and gave a competitive price. The contact details were revealed straight away with no fuss.',
+    date: '2025-07-15',
+  },
+  {
+    id: 'test-006',
+    name: 'Amelia Foster',
+    location: 'London',
+    trade: 'Electrician',
+    rating: 5,
+    comment: 'Used this to find an electrician for a full house rewire. Sarah from Capital Electrical was fantastic — professional, neat and fully certified. Would absolutely use QuoteMyTrade again.',
+    date: '2025-09-20',
+  },
+];
