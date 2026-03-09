@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
             <span className="text-blue-400">Trusted Tradesperson</span>
           </h1>
           <p className="text-gray-400 text-lg leading-relaxed">
-            QuoteMyTrade connects homeowners with vetted local tradespeople in under 2 minutes. Free for customers — always.
+            MidlandsQuotes connects homeowners with vetted local tradespeople in under 2 minutes. Free for customers — always.
           </p>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function HowItWorksPage() {
 
         {/* For trades */}
         <section className="mb-16">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">For Tradespeople</p>
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">For Business'</p>
           <h2 className="text-2xl font-bold text-gray-900 mb-8">Start Receiving Leads</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {TRADE_STEPS.map(step => (
