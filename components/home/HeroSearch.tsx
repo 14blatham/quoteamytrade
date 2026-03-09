@@ -31,7 +31,7 @@ export function HeroSearch() {
       <div className="relative max-w-4xl mx-auto px-6 lg:px-8 pt-24 pb-20 text-center">
         <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          <span className="text-xs font-medium text-gray-300 tracking-wide">2,500+ vetted tradespeople across the UK</span>
+          <span className="text-xs font-medium text-gray-300 tracking-wide">1000+ vetted tradespeople across the Midlands</span>
         </div>
 
         <h1 className="text-4xl sm:text-6xl font-black text-white leading-[1.05] tracking-tight mb-5">
