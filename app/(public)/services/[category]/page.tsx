@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { TRADE_CATEGORIES } from '@/lib/constants/trades';
 import { UK_LOCATIONS } from '@/lib/constants/locations';
@@ -9,6 +10,20 @@ import { TradeIcon } from '@/components/shared/TradeIcon';
 import { formatGBP } from '@/lib/utils/formatting';
 import { generateTradeMeta, generateJsonLdFAQ } from '@/lib/utils/seo';
 import { CheckCircle, MapPin } from 'lucide-react';
+
+// Curated Unsplash photos per trade
+const TRADE_PHOTOS: Record<string, string> = {
+  plumbers:             'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1400&q=85&auto=format&fit=crop',
+  electricians:         'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=85&auto=format&fit=crop',
+  builders:             'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=85&auto=format&fit=crop',
+  surveyors:            'https://images.unsplash.com/photo-1485739681457-ec53f5fcab7e?w=1400&q=85&auto=format&fit=crop',
+  'gas-engineers':      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1400&q=85&auto=format&fit=crop',
+  roofers:              'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1400&q=85&auto=format&fit=crop',
+  plasterers:           'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1400&q=85&auto=format&fit=crop',
+  'painters-decorators':'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1400&q=85&auto=format&fit=crop',
+  'joiners-carpenters': 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1400&q=85&auto=format&fit=crop',
+  tilers:               'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=85&auto=format&fit=crop',
+};
 
 interface Props {
   params: Promise<{ category: string }>;
@@ -34,14 +49,16 @@ export default async function ServiceCategoryPage({ params }: Props) {
     s => s.trades.includes(category as any) && s.status === 'active' && s.leadsEnabled
   );
 
+  const photo = TRADE_PHOTOS[category] ?? TRADE_PHOTOS.builders;
+
   const faqs = [
     {
-      question: `How much does a ${trade.singularName.toLowerCase()} cost in the UK?`,
-      answer: `The cost of hiring a ${trade.singularName.toLowerCase()} in the UK typically ranges from ${formatGBP(trade.averageCostFrom)} to ${formatGBP(trade.averageCostTo)} depending on the scope of work, location, and the specific service required.`,
+      question: `How much does a ${trade.singularName.toLowerCase()} cost in the Midlands?`,
+      answer: `${trade.name} in the Midlands typically charge between ${formatGBP(trade.averageCostFrom)} and ${formatGBP(trade.averageCostTo)} depending on the job. Get free, no-obligation quotes through QuoteMyTrade.`,
     },
     {
       question: `How do I find a reliable ${trade.singularName.toLowerCase()} near me?`,
-      answer: `The best way to find a reliable ${trade.singularName.toLowerCase()} is to use a trusted platform like QuoteMyTrade. Simply enter your postcode and describe your job to receive contact details from vetted local ${trade.name.toLowerCase()}.`,
+      answer: `The best way to find a reliable ${trade.singularName.toLowerCase()} is to use a trusted platform like QuoteMyTrade. Simply enter your Midlands postcode to receive contact details from vetted local ${trade.name.toLowerCase()}.`,
     },
     {
       question: `Are the ${trade.name.toLowerCase()} on QuoteMyTrade vetted?`,
@@ -60,20 +77,31 @@ export default async function ServiceCategoryPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />
 
       <div className="min-h-screen">
-        {/* Hero */}
-        <div className="bg-gray-950 text-white py-14">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-5">
+        {/* Photo hero */}
+        <div className="relative h-72 sm:h-96 overflow-hidden">
+          <Image
+            src={photo}
+            alt={`${trade.name} in the Midlands`}
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/75 via-gray-950/60 to-gray-950" />
+          <div className="relative h-full flex flex-col items-center justify-center text-center px-4 animate-slide-up">
+            <div className="w-14 h-14 bg-blue-600/90 backdrop-blur-sm border border-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
               <TradeIcon slug={trade.slug} className="w-7 h-7 text-white" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">Find Local {trade.name}</h1>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto mb-3 leading-relaxed">{trade.description}</p>
-            <p className="text-gray-500 text-sm mb-8">
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight mb-2">
+              Find Local {trade.name}
+            </h1>
+            <p className="text-blue-200 text-sm mb-1">{trade.description}</p>
+            <p className="text-gray-400 text-xs mb-6">
               Typical cost:{' '}
               <strong className="text-white">{formatGBP(trade.averageCostFrom)} – {formatGBP(trade.averageCostTo)}</strong>
             </p>
             <Link href={`/get-quotes?trade=${trade.slug}`}>
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold px-8 shadow-lg transition-all">
                 Get Free Quotes
               </Button>
             </Link>
@@ -87,7 +115,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
             <h2 className="text-xl font-bold text-gray-900 mb-4">Common {trade.name} Services</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
               {trade.commonServices.map(service => (
-                <div key={service} className="flex items-center gap-2.5 bg-white border border-gray-100 rounded-xl px-4 py-3 text-sm text-gray-700 font-medium">
+                <div key={service} className="flex items-center gap-2.5 bg-white border border-gray-100 rounded-xl px-4 py-3 text-sm text-gray-700 font-medium hover:border-blue-200 hover:bg-blue-50 transition-colors">
                   <CheckCircle className="w-4 h-4 text-blue-600 flex-shrink-0" />
                   {service}
                 </div>
@@ -99,9 +127,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
           {suppliers.length > 0 && (
             <section className="mb-10">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">On the Platform</p>
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
-                Featured {trade.name}
-              </h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Featured {trade.name} in the Midlands</h2>
               <div className="space-y-4 mb-5">
                 {suppliers.slice(0, 3).map(supplier => (
                   <SupplierCard key={supplier.id} supplier={supplier} />
@@ -109,7 +135,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
               </div>
               <div className="text-center">
                 <Link href={`/get-quotes?trade=${trade.slug}`}>
-                  <Button className="bg-blue-700 hover:bg-blue-800 text-white font-semibold">
+                  <Button className="bg-blue-700 hover:bg-blue-600 active:scale-95 text-white font-semibold transition-all">
                     Find {trade.name} Near Me
                   </Button>
                 </Link>
@@ -120,13 +146,13 @@ export default async function ServiceCategoryPage({ params }: Props) {
           {/* Popular locations */}
           <section className="mb-10">
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">By Location</p>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} by Location</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} Across the Midlands</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              {UK_LOCATIONS.slice(0, 12).map(loc => (
+              {UK_LOCATIONS.map(loc => (
                 <Link
                   key={loc.slug}
                   href={`/${trade.slug}/${loc.slug}`}
-                  className="flex items-center gap-2 text-sm bg-white border border-gray-100 rounded-xl px-3 py-2.5 text-gray-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium"
+                  className="flex items-center gap-2 text-sm bg-white border border-gray-100 rounded-xl px-3 py-2.5 text-gray-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 hover:-translate-y-0.5 transition-all font-medium"
                 >
                   <MapPin className="w-3 h-3 text-gray-400 flex-shrink-0" />
                   {loc.city}
@@ -141,7 +167,7 @@ export default async function ServiceCategoryPage({ params }: Props) {
             <h2 className="text-xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
             <div className="space-y-3">
               {faqs.map(faq => (
-                <div key={faq.question} className="bg-white border border-gray-100 rounded-xl p-5">
+                <div key={faq.question} className="bg-white border border-gray-100 rounded-xl p-5 hover:border-gray-200 transition-colors">
                   <h3 className="font-bold text-gray-900 mb-2">{faq.question}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{faq.answer}</p>
                 </div>

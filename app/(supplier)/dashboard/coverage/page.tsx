@@ -4,16 +4,30 @@ import { useState } from 'react';
 import { useMockAuth } from '@/lib/auth/MockAuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { MapPin } from 'lucide-react';
 
-// Sample UK postcode districts
+// Midlands postcode districts
 const ALL_DISTRICTS = [
-  'E1', 'E2', 'E3', 'EC1', 'EC2', 'N1', 'N2', 'NW1', 'NW3',
-  'SE1', 'SE5', 'SW1', 'SW3', 'SW6', 'W1', 'W2', 'W6', 'WC1',
-  'M1', 'M2', 'M3', 'M4', 'M14', 'M15', 'M16', 'M20', 'M21',
-  'B1', 'B2', 'B3', 'B5', 'B11', 'B13', 'B15', 'B16',
-  'LS1', 'LS2', 'LS6', 'LS7', 'LS11', 'LS12',
-  'BS1', 'BS3', 'BS5', 'BS6', 'BS7', 'BS8', 'BS9',
+  // West Midlands
+  'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B11', 'B12', 'B13', 'B14', 'B15', 'B16', 'B17', 'B18', 'B19',
+  'B70', 'B71', 'B90', 'B91', 'B92', 'B93',
+  'CV1', 'CV2', 'CV3', 'CV4', 'CV5', 'CV6', 'CV7',
+  'DY1', 'DY2', 'DY3', 'DY4', 'DY5',
+  'WS1', 'WS2', 'WS3', 'WS4', 'WS5',
+  'WV1', 'WV2', 'WV3', 'WV4', 'WV6', 'WV10', 'WV11',
+  // East Midlands
+  'DE1', 'DE3', 'DE13', 'DE14', 'DE15', 'DE21', 'DE22', 'DE23', 'DE24',
+  'LE1', 'LE2', 'LE3', 'LE4', 'LE5', 'LE7', 'LE8', 'LE9', 'LE11', 'LE12',
+  'LN1', 'LN2', 'LN3', 'LN4', 'LN5', 'LN6',
+  'NG1', 'NG2', 'NG3', 'NG5', 'NG6', 'NG7', 'NG8', 'NG9', 'NG10', 'NG11', 'NG18', 'NG19', 'NG20',
+  'NN1', 'NN2', 'NN3', 'NN4', 'NN5', 'NN6',
+  'S40', 'S41', 'S42', 'S43', 'S44', 'S45',
 ];
+
+const REGION_LABELS: Record<string, string> = {
+  B: 'Birmingham', CV: 'Coventry', DY: 'Dudley', WS: 'Walsall', WV: 'Wolverhampton',
+  DE: 'Derby/Burton', LE: 'Leicester', LN: 'Lincoln', NG: 'Nottingham', NN: 'Northampton', S: 'Chesterfield',
+};
 
 export default function CoveragePage() {
   const { supplier } = useMockAuth();
@@ -38,69 +52,92 @@ export default function CoveragePage() {
 
   return (
     <div className="p-6 sm:p-8">
-      <div className="mb-6">
+      <div className="mb-8">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">Dashboard</p>
         <h1 className="text-2xl font-bold text-gray-900">Coverage Areas</h1>
-        <p className="text-gray-500 text-sm mt-1">Select the postcode districts where you want to receive leads.</p>
+        <p className="text-gray-500 text-sm mt-0.5">Select the Midlands postcode districts where you want to receive leads.</p>
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-        {/* Selected count */}
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-sm font-medium text-gray-700">{selected.length} district{selected.length !== 1 ? 's' : ''} selected</span>
-          <button
-            onClick={() => setSelected([])}
-            className="text-xs text-red-500 hover:text-red-700 transition-colors"
-          >
-            Clear all
-          </button>
+      <div className="bg-white rounded-xl border border-gray-100 p-5 mb-5">
+        {/* Header row */}
+        <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-blue-600" />
+            <span className="text-sm font-semibold text-gray-700">
+              {selected.length} district{selected.length !== 1 ? 's' : ''} selected
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Input
+              placeholder="Search districts..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="h-8 w-36 text-sm border-gray-200"
+            />
+            {selected.length > 0 && (
+              <button
+                onClick={() => setSelected([])}
+                className="text-xs text-red-500 hover:text-red-700 transition-colors font-medium"
+              >
+                Clear all
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Selected tags */}
         {selected.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+          <div className="flex flex-wrap gap-1.5 mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg">
             {selected.map(d => (
-              <span
+              <button
                 key={d}
-                className="inline-flex items-center gap-1 text-xs bg-blue-700 text-white px-2.5 py-1 rounded-full font-medium"
+                onClick={() => toggle(d)}
+                className="flex items-center gap-1 bg-blue-600 text-white text-xs font-mono font-bold px-2 py-0.5 rounded-md hover:bg-red-500 transition-colors"
               >
-                {d}
-                <button onClick={() => toggle(d)} className="hover:text-blue-200 ml-0.5">×</button>
-              </span>
+                {d} ×
+              </button>
             ))}
           </div>
         )}
 
-        {/* Search */}
-        <Input
-          type="text"
-          placeholder="Search districts (e.g. SW1, M1...)"
-          value={search}
-          onChange={e => setSearch(e.target.value.toUpperCase())}
-          className="mb-4 uppercase"
-        />
-
-        {/* District grid */}
-        <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-2">
-          {filtered.map(d => (
+        {/* Grid */}
+        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-1.5">
+          {filtered.map(district => (
             <button
-              key={d}
-              onClick={() => toggle(d)}
-              className={`text-xs font-semibold py-2 rounded-lg border-2 transition-all ${
-                selected.includes(d)
-                  ? 'bg-blue-700 border-blue-700 text-white'
-                  : 'bg-gray-50 border-gray-100 text-gray-600 hover:border-blue-300 hover:text-blue-700'
+              key={district}
+              onClick={() => toggle(district)}
+              className={`py-2 rounded-lg text-xs font-mono font-bold transition-all active:scale-95 ${
+                selected.includes(district)
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-gray-50 border border-gray-200 text-gray-600 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700'
               }`}
             >
-              {d}
+              {district}
             </button>
           ))}
         </div>
+
+        {/* Region legend */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Region Guide</p>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            {Object.entries(REGION_LABELS).map(([prefix, name]) => (
+              <span key={prefix} className="text-xs text-gray-500">
+                <span className="font-mono font-bold text-gray-700">{prefix}*</span> = {name}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="mt-4">
-        <Button onClick={handleSave} className="bg-blue-700 hover:bg-blue-800 text-white">
+      <div className="flex items-center gap-3">
+        <Button
+          onClick={handleSave}
+          className="bg-blue-700 hover:bg-blue-600 active:scale-95 text-white transition-all"
+        >
           {saved ? 'Saved' : 'Save Coverage'}
         </Button>
+        <p className="text-xs text-gray-400">Changes take effect immediately.</p>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ export function SiteFooter() {
               </div>
               <span className="font-black text-white text-[17px] tracking-tight">QuoteMyTrade</span>
             </Link>
-            <p className="text-sm text-gray-500 leading-relaxed mb-5">The UK&apos;s trusted platform for connecting homeowners with vetted local tradespeople. Free quotes. No commission.</p>
+            <p className="text-sm text-gray-500 leading-relaxed mb-5">The Midlands&apos; trusted platform for connecting homeowners with vetted local tradespeople. Free quotes. No commission.</p>
             <div className="flex flex-col gap-2">
               <span className="inline-flex items-center gap-2 text-xs text-gray-500"><span className="w-1.5 h-1.5 rounded-full bg-green-500" />Free for customers</span>
               <span className="inline-flex items-center gap-2 text-xs text-gray-500"><span className="w-1.5 h-1.5 rounded-full bg-blue-500" />Vetted tradespeople</span>

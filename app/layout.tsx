@@ -11,11 +11,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'QuoteMyTrade | Free Quotes from Local Tradespeople',
+    default: 'QuoteMyTrade | Free Quotes from Midlands Tradespeople',
     template: '%s | QuoteMyTrade',
   },
-  description: 'Get free quotes from vetted local tradespeople across the UK. Compare prices, read genuine reviews and contact professionals directly. No fees, no commission.',
-  keywords: ['tradespeople', 'quotes', 'plumbers', 'electricians', 'builders', 'UK', 'local', 'compare prices'],
+  description: 'Get free quotes from vetted local tradespeople across the Midlands. Compare prices, read genuine reviews and contact professionals directly. No fees, no commission.',
+  keywords: ['tradespeople', 'quotes', 'plumbers', 'electricians', 'builders', 'Midlands', 'Birmingham', 'Coventry', 'Nottingham'],
   authors: [{ name: 'QuoteMyTrade' }],
   creator: 'QuoteMyTrade',
   publisher: 'QuoteMyTrade Ltd',
@@ -44,7 +44,7 @@ export default function RootLayout({
     <html lang="en-GB" className={inter.className}>
       <body className="bg-white text-gray-900 antialiased">
         <SiteHeader />
-        <main>{children}</main>
+        <main className="page-enter">{children}</main>
         <SiteFooter />
       </body>
     </html>

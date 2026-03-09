@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { TRADE_CATEGORIES } from '@/lib/constants/trades';
 import { UK_LOCATIONS } from '@/lib/constants/locations';
@@ -9,6 +10,20 @@ import { TradeIcon } from '@/components/shared/TradeIcon';
 import { formatGBP } from '@/lib/utils/formatting';
 import { generateTradeLocationMeta, generateJsonLdFAQ } from '@/lib/utils/seo';
 import { MapPin, ChevronRight } from 'lucide-react';
+
+// Trade-specific photos
+const TRADE_PHOTOS: Record<string, string> = {
+  plumbers:             'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1400&q=85&auto=format&fit=crop',
+  electricians:         'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1400&q=85&auto=format&fit=crop',
+  builders:             'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=85&auto=format&fit=crop',
+  surveyors:            'https://images.unsplash.com/photo-1485739681457-ec53f5fcab7e?w=1400&q=85&auto=format&fit=crop',
+  'gas-engineers':      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1400&q=85&auto=format&fit=crop',
+  roofers:              'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1400&q=85&auto=format&fit=crop',
+  plasterers:           'https://images.unsplash.com/photo-1515263487990-61b07816b324?w=1400&q=85&auto=format&fit=crop',
+  'painters-decorators':'https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=1400&q=85&auto=format&fit=crop',
+  'joiners-carpenters': 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1400&q=85&auto=format&fit=crop',
+  tilers:               'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=85&auto=format&fit=crop',
+};
 
 interface Props {
   params: Promise<{ trade: string; location: string }>;
@@ -44,18 +59,20 @@ export default async function TradeLocationPage({ params }: Props) {
     return hasTrade && isActive && coversArea;
   });
 
+  const photo = TRADE_PHOTOS[tradeSlug] ?? TRADE_PHOTOS.builders;
+
   const faqs = [
     {
       question: `How much do ${trade.name.toLowerCase()} cost in ${location.city}?`,
-      answer: `${trade.name} in ${location.city} typically charge between ${formatGBP(trade.averageCostFrom)} and ${formatGBP(trade.averageCostTo)} depending on the job. Prices vary by area, job complexity and individual contractor. Get free, no-obligation quotes through QuoteMyTrade.`,
+      answer: `${trade.name} in ${location.city} typically charge between ${formatGBP(trade.averageCostFrom)} and ${formatGBP(trade.averageCostTo)} depending on the job. Get free, no-obligation quotes through QuoteMyTrade.`,
     },
     {
       question: `How quickly can I find a ${trade.singularName.toLowerCase()} in ${location.city}?`,
-      answer: `Using QuoteMyTrade, you can receive contact details for vetted local ${trade.name.toLowerCase()} in ${location.city} in under 2 minutes. Simply fill in a short form and we match you instantly with available tradespeople in your area.`,
+      answer: `Using QuoteMyTrade, you can receive contact details for vetted local ${trade.name.toLowerCase()} in ${location.city} in under 2 minutes.`,
     },
     {
       question: `Do I need to pay to use QuoteMyTrade in ${location.city}?`,
-      answer: `No — QuoteMyTrade is completely free for customers in ${location.city} and across the UK. We don't charge any fees or take commission on completed jobs.`,
+      answer: `No — QuoteMyTrade is completely free for customers in ${location.city}. We don't charge any fees or take commission on completed jobs.`,
     },
   ];
 
@@ -77,24 +94,31 @@ export default async function TradeLocationPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Hero */}
-        <div className="bg-gray-950 text-white py-12">
-          <div className="max-w-4xl mx-auto px-4 text-center">
-            <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+        {/* Photo hero */}
+        <div className="relative h-64 sm:h-80 overflow-hidden">
+          <Image
+            src={photo}
+            alt={`${trade.name} in ${location.city}`}
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/80 via-gray-950/65 to-gray-950" />
+          <div className="relative h-full flex flex-col items-center justify-center text-center px-4 animate-slide-up">
+            <div className="w-12 h-12 bg-blue-600/80 backdrop-blur-sm border border-white/20 rounded-xl flex items-center justify-center mx-auto mb-3">
               <TradeIcon slug={trade.slug} className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight mb-3">
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-1">
               {trade.name} in {location.city}
             </h1>
-            <p className="text-gray-400 text-lg mb-2">
-              Free quotes from vetted local {trade.name.toLowerCase()} in {location.city} and {location.region}
-            </p>
-            <p className="text-gray-500 text-sm mb-8">
+            <p className="text-gray-400 text-sm mb-1">{location.region}</p>
+            <p className="text-gray-500 text-xs mb-5">
               Typical cost:{' '}
               <strong className="text-white">{formatGBP(trade.averageCostFrom)} – {formatGBP(trade.averageCostTo)}</strong>
             </p>
             <Link href={`/get-quotes?trade=${trade.slug}&postcode=${location.postcodeDistricts[0]}`}>
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-semibold px-7 shadow-lg transition-all">
                 Get Free Quotes in {location.city}
               </Button>
             </Link>
@@ -126,7 +150,9 @@ export default async function TradeLocationPage({ params }: Props) {
                   Request quotes now and we&apos;ll match you with available {trade.name.toLowerCase()}.
                 </p>
                 <Link href={`/get-quotes?trade=${trade.slug}`}>
-                  <Button className="bg-blue-700 hover:bg-blue-800 text-white font-semibold">Request Quotes</Button>
+                  <Button className="bg-blue-700 hover:bg-blue-600 active:scale-95 text-white font-semibold transition-all">
+                    Request Quotes
+                  </Button>
                 </Link>
               </div>
             </section>
@@ -135,13 +161,13 @@ export default async function TradeLocationPage({ params }: Props) {
           {/* Nearby locations */}
           <section className="mb-10">
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Nearby</p>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} in Nearby Areas</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} in Nearby Midlands Areas</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
               {UK_LOCATIONS.filter(l => l.slug !== location.slug).slice(0, 8).map(nearbyLoc => (
                 <Link
                   key={nearbyLoc.slug}
                   href={`/${trade.slug}/${nearbyLoc.slug}`}
-                  className="flex items-center gap-2 text-sm bg-white border border-gray-100 rounded-xl px-3 py-2.5 text-gray-700 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 transition-colors font-medium"
+                  className="flex items-center gap-2 text-sm bg-white border border-gray-100 rounded-xl px-3 py-2.5 text-gray-700 hover:border-blue-300 hover:bg-blue-50 hover:text-blue-700 hover:-translate-y-0.5 transition-all font-medium"
                 >
                   <MapPin className="w-3 h-3 text-gray-400 flex-shrink-0" />
                   {nearbyLoc.city}
@@ -156,7 +182,7 @@ export default async function TradeLocationPage({ params }: Props) {
             <h2 className="text-xl font-bold text-gray-900 mb-4">{trade.name} in {location.city}</h2>
             <div className="space-y-3">
               {faqs.map(faq => (
-                <div key={faq.question} className="bg-white border border-gray-100 rounded-xl p-5">
+                <div key={faq.question} className="bg-white border border-gray-100 rounded-xl p-5 hover:border-gray-200 transition-colors">
                   <h3 className="font-bold text-gray-900 mb-2">{faq.question}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{faq.answer}</p>
                 </div>

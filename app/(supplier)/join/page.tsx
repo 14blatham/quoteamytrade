@@ -56,7 +56,7 @@ export default function JoinPage() {
             <span className="font-bold text-gray-900 text-lg">QuoteMyTrade</span>
           </Link>
           <h1 className="text-2xl font-bold text-gray-900">Create Your Free Account</h1>
-          <p className="text-gray-500 mt-1 text-sm">Join thousands of UK tradespeople growing with QuoteMyTrade</p>
+          <p className="text-gray-500 mt-1 text-sm">Join Midlands tradespeople growing with QuoteMyTrade</p>
         </div>
 
         {/* Benefits strip */}
