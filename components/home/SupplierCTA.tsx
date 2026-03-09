@@ -23,7 +23,7 @@ export function SupplierCTA() {
               Grow your business<br />with qualified leads
             </h2>
             <p className="text-gray-400 leading-relaxed mb-8 max-w-sm">
-              Join thousands of UK tradespeople already using QuoteMyTrade. Pay only for the leads you receive — no subscription, no commission.
+              Join Hundreds of Midlands based tradespeople already using MidlandsQuotes. Pay only for the leads you receive — no subscription, no commission.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link href="/join">
