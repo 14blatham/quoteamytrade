@@ -39,7 +39,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   
-  /* Sharper, more architectural corner radiuses */
+  /* Technical, ultra-sharp corner radiuses for an engineered feel */
   --radius-sm: calc(var(--radius) * 0.5);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -50,95 +50,95 @@
 }
 
 :root {
-  /* Premium Light Mode: Crisp off-white backgrounds, deep slate text, brass accents */
-  --background: oklch(0.985 0.005 245);
-  --foreground: oklch(0.20 0.02 245);
+  /* Sleek Monochrome Light Mode: Pure white, Obsidian text, and Steel Blue accents */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.18 0.02 250);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.20 0.02 245);
+  --card-foreground: oklch(0.18 0.02 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.20 0.02 245);
+  --popover-foreground: oklch(0.18 0.02 250);
   
-  /* Primary Action: Deep Slate/Navy - conveys immense trust and stability */
-  --primary: oklch(0.25 0.03 245);
-  --primary-foreground: oklch(0.985 0.005 245);
+  /* Primary Action: Solid Jet Black - authoritative and minimal */
+  --primary: oklch(0.12 0.01 250);
+  --primary-foreground: oklch(1 0 0);
   
-  /* Secondary & Muted: Cool structural greys */
-  --secondary: oklch(0.94 0.01 245);
-  --secondary-foreground: oklch(0.25 0.03 245);
-  --muted: oklch(0.96 0.01 245);
-  --muted-foreground: oklch(0.55 0.02 245);
+  /* Secondary: Cool industrial silver */
+  --secondary: oklch(0.96 0.01 250);
+  --secondary-foreground: oklch(0.18 0.02 250);
+  --muted: oklch(0.96 0.01 250);
+  --muted-foreground: oklch(0.50 0.02 250);
   
-  /* Accent: Metallic Brass/Gold - draws the eye to quote badges and highlights */
-  --accent: oklch(0.70 0.12 55);
-  --accent-foreground: oklch(0.15 0.02 245);
+  /* Accent: Precision Blue - a muted, professional blue for focus and subtle highlights */
+  --accent: oklch(0.94 0.01 250);
+  --accent-foreground: oklch(0.40 0.08 250);
   
-  --destructive: oklch(0.55 0.20 25);
-  --border: oklch(0.90 0.01 245);
-  --input: oklch(0.90 0.01 245);
+  --destructive: oklch(0.50 0.15 25);
+  --border: oklch(0.90 0.01 250);
+  --input: oklch(0.90 0.01 250);
   
-  /* Brass focus ring for forms to make the quote process feel premium */
-  --ring: oklch(0.70 0.12 55);
+  /* The ring is a sharp blue to denote precision during input */
+  --ring: oklch(0.45 0.08 250);
   
-  /* Bespoke Dashboard Charts: Brass, Slate, Teal, Ash, Navy */
-  --chart-1: oklch(0.70 0.12 55);
-  --chart-2: oklch(0.45 0.04 245);
-  --chart-3: oklch(0.60 0.08 180);
-  --chart-4: oklch(0.85 0.02 245);
-  --chart-5: oklch(0.25 0.03 245);
+  /* Dashboard Charts: Monochromatic Slate scale */
+  --chart-1: oklch(0.18 0.02 250);
+  --chart-2: oklch(0.40 0.04 250);
+  --chart-3: oklch(0.60 0.02 250);
+  --chart-4: oklch(0.80 0.01 250);
+  --chart-5: oklch(0.45 0.08 250);
   
-  /* Tighter, more professional radius */
-  --radius: 0.35rem; 
+  /* Ultra-sleek, technical radius */
+  --radius: 0.2rem; 
 
-  --sidebar: oklch(0.985 0.005 245);
-  --sidebar-foreground: oklch(0.20 0.02 245);
-  --sidebar-primary: oklch(0.25 0.03 245);
-  --sidebar-primary-foreground: oklch(0.985 0.005 245);
-  --sidebar-accent: oklch(0.94 0.01 245);
-  --sidebar-accent-foreground: oklch(0.25 0.03 245);
-  --sidebar-border: oklch(0.90 0.01 245);
-  --sidebar-ring: oklch(0.70 0.12 55);
+  --sidebar: oklch(0.98 0.005 250);
+  --sidebar-foreground: oklch(0.18 0.02 250);
+  --sidebar-primary: oklch(0.12 0.01 250);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.94 0.01 250);
+  --sidebar-accent-foreground: oklch(0.12 0.01 250);
+  --sidebar-border: oklch(0.90 0.01 250);
+  --sidebar-ring: oklch(0.45 0.08 250);
 }
 
 .dark {
-  /* Premium Dark Mode: Midnight slate backgrounds, high-contrast brass actions */
-  --background: oklch(0.16 0.02 245);
-  --foreground: oklch(0.95 0.01 245);
-  --card: oklch(0.20 0.02 245);
-  --card-foreground: oklch(0.95 0.01 245);
-  --popover: oklch(0.20 0.02 245);
-  --popover-foreground: oklch(0.95 0.01 245);
+  /* High-Contrast Obsidian Dark Mode: True black backgrounds with surgical white text */
+  --background: oklch(0.12 0.01 250);
+  --foreground: oklch(0.98 0.005 250);
+  --card: oklch(0.15 0.01 250);
+  --card-foreground: oklch(0.98 0.005 250);
+  --popover: oklch(0.15 0.01 250);
+  --popover-foreground: oklch(0.98 0.005 250);
   
-  /* Primary Action flips to Brass in dark mode for a highly clickable, glowing aesthetic */
-  --primary: oklch(0.75 0.12 55);
-  --primary-foreground: oklch(0.15 0.02 245);
+  /* Primary Action in Dark Mode: Pure High-Contrast White */
+  --primary: oklch(0.98 0.005 250);
+  --primary-foreground: oklch(0.12 0.01 250);
   
-  --secondary: oklch(0.25 0.02 245);
-  --secondary-foreground: oklch(0.95 0.01 245);
-  --muted: oklch(0.23 0.02 245);
-  --muted-foreground: oklch(0.65 0.02 245);
+  --secondary: oklch(0.20 0.02 250);
+  --secondary-foreground: oklch(0.98 0.005 250);
+  --muted: oklch(0.20 0.02 250);
+  --muted-foreground: oklch(0.60 0.02 250);
   
-  --accent: oklch(0.28 0.03 245);
-  --accent-foreground: oklch(0.95 0.01 245);
+  --accent: oklch(0.20 0.02 250);
+  --accent-foreground: oklch(0.98 0.005 250);
   
-  --destructive: oklch(0.60 0.18 25);
-  --border: oklch(0.28 0.02 245);
-  --input: oklch(0.28 0.02 245);
-  --ring: oklch(0.75 0.12 55);
+  --destructive: oklch(0.45 0.15 25);
+  --border: oklch(0.22 0.02 250);
+  --input: oklch(0.22 0.02 250);
+  --ring: oklch(0.65 0.10 250);
   
-  --chart-1: oklch(0.75 0.12 55);
-  --chart-2: oklch(0.55 0.05 245);
-  --chart-3: oklch(0.65 0.09 180);
-  --chart-4: oklch(0.35 0.03 245);
-  --chart-5: oklch(0.85 0.02 245);
+  --chart-1: oklch(0.98 0.005 250);
+  --chart-2: oklch(0.75 0.01 250);
+  --chart-3: oklch(0.55 0.05 250);
+  --chart-4: oklch(0.35 0.03 250);
+  --chart-5: oklch(0.20 0.02 250);
 
-  --sidebar: oklch(0.16 0.02 245);
-  --sidebar-foreground: oklch(0.95 0.01 245);
-  --sidebar-primary: oklch(0.75 0.12 55);
-  --sidebar-primary-foreground: oklch(0.15 0.02 245);
-  --sidebar-accent: oklch(0.25 0.02 245);
-  --sidebar-accent-foreground: oklch(0.95 0.01 245);
-  --sidebar-border: oklch(0.28 0.02 245);
-  --sidebar-ring: oklch(0.75 0.12 55);
+  --sidebar: oklch(0.12 0.01 250);
+  --sidebar-foreground: oklch(0.98 0.005 250);
+  --sidebar-primary: oklch(0.98 0.005 250);
+  --sidebar-primary-foreground: oklch(0.12 0.01 250);
+  --sidebar-accent: oklch(0.20 0.02 250);
+  --sidebar-accent-foreground: oklch(0.98 0.005 250);
+  --sidebar-border: oklch(0.22 0.02 250);
+  --sidebar-ring: oklch(0.65 0.10 250);
 }
 
 @layer base {
@@ -148,16 +148,17 @@
   
   body {
     @apply bg-background text-foreground;
-    /* High-end typography rendering */
-    font-feature-settings: "rlig" 1, "calt" 1;
+    /* Highest-end typography rendering for crisp, professional text */
+    font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.01em; /* Tighter tracking for a premium feel */
   }
 
-  /* Custom selection color to match the premium brass accent */
+  /* Deep slate selection for a clean monochromatic look */
   ::selection {
-    background-color: oklch(0.70 0.12 55 / 0.25);
+    background-color: oklch(0.12 0.01 250 / 0.1);
     color: inherit;
   }
 }
